@@ -106,33 +106,45 @@ TEST(TDynamicMatrix, compare_equal_matrices_return_true) // 15
 	EXPECT_TRUE(m == m1);
 }
 
-TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
+TEST(TDynamicMatrix, compare_matrix_with_itself_return_true) // 16
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(5);
+	m[0][4] = 23; m[1][3] = 5;
+	EXPECT_TRUE(m == m);
 }
 
-TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
+TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal) // 17
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(5);
+	TDynamicMatrix<int> m1(457);
+	EXPECT_FALSE(m == m1);
 }
 
-TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
+TEST(TDynamicMatrix, can_add_matrices_with_equal_size) // 18
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(5); m[0][4] = 23; 
+	TDynamicMatrix<int> m1(5); m1[1][3] = 5;
+	EXPECT_NO_THROW(m + m1);
 }
 
-TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
+TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size) // 19
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(5); m[0][4] = 23;
+	TDynamicMatrix<int> m1(457); m1[1][3] = 5;
+	EXPECT_ANY_THROW(m + m1);
 }
 
-TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
+TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size) // 20
 {
-  ADD_FAILURE();
+	TDynamicMatrix<int> m(5); m[0][4] = 23;
+	TDynamicMatrix<int> m1(5); m1[0][4] = 5;
+	EXPECT_NO_THROW(m - m1);
 }
 
-TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
+TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size) // 21
 {
-	ADD_FAILURE();
+	TDynamicMatrix<int> m(5); m[0][4] = 23;
+	TDynamicMatrix<int> m1(457); m1[0][4] = 5;
+	EXPECT_ANY_THROW(m - m1);
 }
 
