@@ -86,66 +86,89 @@ TEST(TDynamicVector, assign_operator_change_vector_size) // 13
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size) // 14
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5);
+	TDynamicVector<int> m1(457); m1[32] = 43;
+	EXPECT_NO_THROW(m = m1);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true) // 15
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5);
+	TDynamicVector<int> m1(457); m1[32] = 43;
+	m = m1;
+	EXPECT_TRUE(m == m1);
 }
 
 TEST(TDynamicVector, compare_vector_with_itself_return_true) // 16
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5);
+	EXPECT_TRUE(m == m);
 }
 
 TEST(TDynamicVector, vectors_with_different_size_are_not_equal) // 17
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5);
+	TDynamicVector<int> m1(457);
+	EXPECT_FALSE(m == m1);
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector) // 18
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5);
+	EXPECT_NO_THROW(m + 1);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector) // 19
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	EXPECT_NO_THROW(m - 1);
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)  // 20
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	EXPECT_NO_THROW(43 * m);
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size) // 21
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	TDynamicVector<int> m1(5); m1[0] = 46; m1[3] = 43;
+	EXPECT_NO_THROW(m + m1);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size) // 22
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	TDynamicVector<int> m1(457); m1[0] = 46; m1[3] = 43;
+	EXPECT_ANY_THROW(m + m1);
 }
 
 TEST(TDynamicVector, can_subtract_vectors_with_equal_size) // 23
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	TDynamicVector<int> m1(5); m1[0] = 46; m1[3] = 43;
+	EXPECT_NO_THROW(m - m1);
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size) // 24
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	TDynamicVector<int> m1(457); m1[0] = 46; m1[3] = 43;
+	EXPECT_ANY_THROW(m - m1);
 }
 
 TEST(TDynamicVector, can_multiply_vectors_with_equal_size) // 25
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	TDynamicVector<int> m1(5); m1[0] = 46; m1[3] = 43;
+	EXPECT_NO_THROW(m * m1);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size) // 26
 {
-	ADD_FAILURE();
+	TDynamicVector<int> m(5); m += 7;
+	TDynamicVector<int> m1(457); m1[0] = 46; m1[3] = 43;
+	EXPECT_ANY_THROW(m * m1);
 }
 

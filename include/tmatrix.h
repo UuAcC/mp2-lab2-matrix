@@ -139,10 +139,23 @@ public:
 		return res;
 	}
 
+	TDynamicVector operator+=(T val) { return *this + val; }
+	TDynamicVector operator-=(T val) { return *this - val; }
+	TDynamicVector operator*=(T val) { return *this * val; }
+
+	friend TDynamicVector operator*(T val, const TDynamicVector& v) 
+	{ 
+		TDynamicVector res = TDynamicVector(v);
+		size_t size = res.sz;
+		for (size_t i = 0; i < size; i++) { res[i] = res[i] * val; }
+		return res;
+	}
+
 	// векторные операции
 	TDynamicVector operator+(const TDynamicVector& v)
 	{
-		if (sz != v.sz) throw - 1;
+		if (sz != v.sz) 
+			throw invalid_argument("Vector sizes must be equal");
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
 		for (size_t i = 0; i < size; i++) { res[i] = res[i] + v[i]; }
@@ -150,7 +163,8 @@ public:
 	}
 	TDynamicVector operator-(const TDynamicVector& v)
 	{
-		if (sz != v.sz) throw - 1;
+		if (sz != v.sz) 
+			throw invalid_argument("Vector sizes must be equal");
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
 		for (size_t i = 0; i < size; i++) { res[i] = res[i] - v[i]; }
@@ -158,12 +172,18 @@ public:
 	}
 	T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
 	{
+		if (sz != v.sz) 
+			throw invalid_argument("Vector sizes must be equal");
 		T res = 0;
 		size_t size = sz;
 		for (size_t i = 0; i < size; i++)
 			res = res + this->at(i) * v[i];
 		return res;
 	}
+
+	TDynamicVector operator+=(const TDynamicVector& v) { return *this + v; }
+	TDynamicVector operator-=(const TDynamicVector& v) { return *this - v; }
+	T operator*=(const TDynamicVector& v) { return *this * v; }
 
 	friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
 	{
@@ -184,6 +204,8 @@ public:
 			ostr << v.pMem[i] << ' '; // требуется оператор<< для типа T
 		return ostr;
 	}
+
+
 };
 // Динамическая матрица - 
 // шаблонная матрица на динамической памяти
