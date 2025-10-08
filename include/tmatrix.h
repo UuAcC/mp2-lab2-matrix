@@ -60,7 +60,8 @@ public:
 		if (*this == v) return *this;
 		delete[] pMem;
 		sz = v.sz; pMem = new T[sz];
-		memcpy(pMem, v.pMem, sz * sizeof(T));
+		for (size_t i = 0; i < sz; i++)
+			pMem[i] = v.pMem[i];
 		return *this;
 	}
 	TDynamicVector& operator=(TDynamicVector&& v) noexcept
@@ -119,21 +120,21 @@ public:
 	{
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
-		for (size_t i = 0; i < size; i++) { res[i] += val; }
+		for (size_t i = 0; i < size; i++) { res[i] = res[i] + val; }
 		return res;
 	}
 	TDynamicVector operator-(T val)
 	{
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
-		for (size_t i = 0; i < size; i++) { res[i] -= val; }
+		for (size_t i = 0; i < size; i++) { res[i] = res[i] - val; }
 		return res;
 	}
 	TDynamicVector operator*(T val)
 	{
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
-		for (size_t i = 0; i < size; i++) { res[i] *= val; }
+		for (size_t i = 0; i < size; i++) { res[i] = res[i] * val; }
 		return res;
 	}
 
@@ -143,7 +144,7 @@ public:
 		if (sz != v.sz) throw - 1;
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
-		for (size_t i = 0; i < size; i++) { res[i] += v[i]; }
+		for (size_t i = 0; i < size; i++) { res[i] = res[i] + v[i]; }
 		return res;
 	}
 	TDynamicVector operator-(const TDynamicVector& v)
@@ -151,7 +152,7 @@ public:
 		if (sz != v.sz) throw - 1;
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
-		for (size_t i = 0; i < size; i++) { res[i] -= v[i]; }
+		for (size_t i = 0; i < size; i++) { res[i] = res[i] - v[i]; }
 		return res;
 	}
 	T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
@@ -159,7 +160,7 @@ public:
 		T res = 0;
 		size_t size = sz;
 		for (size_t i = 0; i < size; i++) 
-			res += this->at(i) * v[i];
+			res = res + this->at(i) * v[i];
 		return res;
 	}
 
@@ -201,6 +202,9 @@ public:
 	}
 
 	using TDynamicVector<TDynamicVector<T>>::operator[];
+	using TDynamicVector<TDynamicVector<T>>::size;
+
+	TDynamicVector<T>* get_pMem() noexcept { return this->pMem; }
 
 	// сравнение
 	bool operator==(const TDynamicMatrix& m) const noexcept
@@ -222,9 +226,9 @@ public:
 	TDynamicVector<T> operator*(const TDynamicVector<T>& v)
 	{
 		size_t size = sz;
-		TDynamicVector<T> res(*this);
+		TDynamicVector<T> res(size);
 		for (size_t i = 0; i < size; i++) 
-			res[i] = res[i] * val;
+			res[i] = (*this)[i] * v;
 		return res;
 	}
 
@@ -255,12 +259,12 @@ public:
 		TDynamicMatrix res(sz);
 		const size_t n = sz;
 		for (size_t i = 0; i < n; ++i) {
-			T* c_row = res[i].pMem;
+			T* c_row = &res[i][0];
 			for (size_t j = 0; j < n; ++j) 
 				c_row[j] = T();
 			for (size_t k = 0; k < n; ++k) {
 				T a_val = (*this)[i][k];
-				const T* b_row = m[k].pMem;
+				const T* b_row = &m[k][0];
 				for (size_t j = 0; j < n; ++j)
 					c_row[j] += a_val * b_row[j];
 			}
@@ -271,10 +275,23 @@ public:
 	// ввод/вывод
 	friend istream& operator>>(istream& istr, TDynamicMatrix& v)
 	{
+		for (size_t i = 0; i < v.sz; i++) {
+			for (size_t j = 0; j < v.sz; j++) {
+				istr >> v[i][j];
+			}
+		}
 		return istr;
 	}
 	friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
 	{
+		ostr << "Matrix size: " << v.sz << ";\nMatrix itself:\n";
+		for (size_t i = 0; i < v.sz; i++) {
+			ostr << "( ";
+			for (size_t j = 0; j < v.sz; j++) {
+				ostr << v[i][j] << ' ';
+			}
+			ostr << ")\n";
+		}
 		return ostr;
 	}
 };
