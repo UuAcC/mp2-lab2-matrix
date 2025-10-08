@@ -76,6 +76,7 @@ public:
 	}
 
 	size_t size() const noexcept { return sz; }
+	T* get_pMem() noexcept { return this->pMem; }
 
 	// индексация
 	T& operator[](size_t ind)
@@ -159,7 +160,7 @@ public:
 	{
 		T res = 0;
 		size_t size = sz;
-		for (size_t i = 0; i < size; i++) 
+		for (size_t i = 0; i < size; i++)
 			res = res + this->at(i) * v[i];
 		return res;
 	}
@@ -195,7 +196,7 @@ class TDynamicMatrix : private TDynamicVector<TDynamicVector<T>>
 public:
 	TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
 	{
-		if (s > MAX_MATRIX_SIZE) 
+		if (s > MAX_MATRIX_SIZE)
 			throw out_of_range("Matrix size should be equal or less than maximum");
 		for (size_t i = 0; i < sz; i++)
 			pMem[i] = TDynamicVector<T>(sz);
@@ -203,8 +204,7 @@ public:
 
 	using TDynamicVector<TDynamicVector<T>>::operator[];
 	using TDynamicVector<TDynamicVector<T>>::size;
-
-	TDynamicVector<T>* get_pMem() noexcept { return this->pMem; }
+	using TDynamicVector<TDynamicVector<T>>::get_pMem;
 
 	// сравнение
 	bool operator==(const TDynamicMatrix& m) const noexcept
@@ -227,7 +227,7 @@ public:
 	{
 		size_t size = sz;
 		TDynamicVector<T> res(size);
-		for (size_t i = 0; i < size; i++) 
+		for (size_t i = 0; i < size; i++)
 			res[i] = (*this)[i] * v;
 		return res;
 	}
@@ -253,14 +253,14 @@ public:
 	}
 	TDynamicMatrix operator*(const TDynamicMatrix& m)
 	{
-		if (sz != m.sz) 
+		if (sz != m.sz)
 			throw invalid_argument("Matrix sizes must be equal");
 
 		TDynamicMatrix res(sz);
 		const size_t n = sz;
 		for (size_t i = 0; i < n; ++i) {
 			T* c_row = &res[i][0];
-			for (size_t j = 0; j < n; ++j) 
+			for (size_t j = 0; j < n; ++j)
 				c_row[j] = T();
 			for (size_t k = 0; k < n; ++k) {
 				T a_val = (*this)[i][k];

@@ -4,24 +4,24 @@
 
 TEST(TDynamicMatrix, can_create_matrix_with_positive_length) // 1
 {
-  ASSERT_NO_THROW(TDynamicMatrix<int> m(5));
+	ASSERT_NO_THROW(TDynamicMatrix<int> m(5));
 }
 
 TEST(TDynamicMatrix, cant_create_too_large_matrix) // 2
 {
-  ASSERT_ANY_THROW(TDynamicMatrix<int> m(MAX_MATRIX_SIZE + 1));
+	ASSERT_ANY_THROW(TDynamicMatrix<int> m(MAX_MATRIX_SIZE + 1));
 }
 
 TEST(TDynamicMatrix, throws_when_create_matrix_with_negative_length) // 3
 {
-  ASSERT_ANY_THROW(TDynamicMatrix<int> m(-5));
+	ASSERT_ANY_THROW(TDynamicMatrix<int> m(-5));
 }
 
 TEST(TDynamicMatrix, can_create_copied_matrix) // 4
 {
-  TDynamicMatrix<int> m(5);
+	TDynamicMatrix<int> m(5);
 
-  ASSERT_NO_THROW(TDynamicMatrix<int> m1(m));
+	ASSERT_NO_THROW(TDynamicMatrix<int> m1(m));
 }
 
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one) // 5
@@ -59,8 +59,8 @@ TEST(TDynamicMatrix, can_set_and_get_element) // 8
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index) // 9
 {
-  TDynamicMatrix<int> m(5);
-  EXPECT_ANY_THROW(m[0][-1]);
+	TDynamicMatrix<int> m(5);
+	EXPECT_ANY_THROW(m[0][-1]);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index) // 10
@@ -122,7 +122,7 @@ TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal) // 17
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size) // 18
 {
-	TDynamicMatrix<int> m(5); m[0][4] = 23; 
+	TDynamicMatrix<int> m(5); m[0][4] = 23;
 	TDynamicMatrix<int> m1(5); m1[1][3] = 5;
 	EXPECT_NO_THROW(m + m1);
 }
