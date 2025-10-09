@@ -31,7 +31,7 @@ public:
 			throw out_of_range("Vector size should be greater than zero");
 		if (sz > MAX_VECTOR_SIZE)
 			throw out_of_range("Vector size should be equal or less than maximum");
-		pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
+		pMem = new T[sz] {}; // У типа T д.б. констуктор по умолчанию
 	}
 	TDynamicVector(T* arr, size_t s) : sz(s)
 	{
@@ -141,17 +141,17 @@ public:
 
 	TDynamicVector operator+=(T val)
 	{
-		for (size_t i = 0; i < sz; i++) { this[i] = this[i] + val; }
+		for (size_t i = 0; i < sz; i++) { (*this)[i] = (*this)[i] + val; }
 		return *this;
 	}
 	TDynamicVector operator-=(T val)
 	{
-		for (size_t i = 0; i < sz; i++) { this[i] = this[i] - val; }
+		for (size_t i = 0; i < sz; i++) { (*this)[i] = (*this)[i] - val; }
 		return *this;
 	}
 	TDynamicVector operator*=(T val)
 	{
-		for (size_t i = 0; i < sz; i++) { this[i] = this[i] * val; }
+		for (size_t i = 0; i < sz; i++) { (*this)[i] = (*this)[i] * val; }
 		return *this;
 	}
 
@@ -197,14 +197,14 @@ public:
 	{
 		if (sz != v.sz)
 			throw invalid_argument("Vector sizes must be equal");
-		for (size_t i = 0; i < sz; i++) { this[i] = this[i] + v[i]; }
+		for (size_t i = 0; i < sz; i++) { (*this)[i] = (*this)[i] + v[i]; }
 		return *this;
 	}
 	TDynamicVector& operator-=(const TDynamicVector& v)
 	{
 		if (sz != v.sz)
 			throw invalid_argument("Vector sizes must be equal");
-		for (size_t i = 0; i < sz; i++) { this[i] = this[i] - v[i]; }
+		for (size_t i = 0; i < sz; i++) { (*this)[i] = (*this)[i] - v[i]; }
 		return *this;
 	}
 

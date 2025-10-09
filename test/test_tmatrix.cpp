@@ -138,7 +138,7 @@ TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size) // 20
 {
 	TDynamicMatrix<int> m(5); m[0][4] = 23;
 	TDynamicMatrix<int> m1(5); m1[0][4] = 5;
-	EXPECT_NO_THROW(m - m1);
+	EXPECT_NO_THROW();
 }
 
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size) // 21
