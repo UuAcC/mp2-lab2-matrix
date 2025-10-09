@@ -263,8 +263,29 @@ public:
 	// матрично-скалярные операции
 	TDynamicMatrix operator*(const T& val)
 	{
-		TDynamicMatrix res(*this);
-		return res * val;
+		TDynamicMatrix res(sz);
+		for (size_t i = 0; i < res.sz; i++) 
+		{
+			auto res_row = res[i];
+			for (size_t j = 0; j < res.sz; j++) 
+			{
+				res_row[j] = res_row[j] * val;
+			}
+		}
+		return res;
+	}
+
+	TDynamicMatrix& operator*=(const T& val)
+	{
+		for (size_t i = 0; i < res.sz; i++)
+		{
+			auto row = (*this)[i];
+			for (size_t j = 0; j < res.sz; j++)
+			{
+				row[j] = row[j] * val;
+			}
+		}
+		return *this;
 	}
 
 	// матрично-векторные операции
