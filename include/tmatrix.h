@@ -81,23 +81,23 @@ public:
 	// индексация
 	T& operator[](size_t ind)
 	{
-		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size - 1");
+		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size");
 		return pMem[ind];
 	}
 	const T& operator[](size_t ind) const
 	{
-		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size - 1");
+		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size");
 		return pMem[ind];
 	}
 	// индексация с контролем
 	T& at(size_t ind)
 	{
-		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size - 1");
+		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size");
 		return pMem[ind];
 	}
 	const T& at(size_t ind) const
 	{
-		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size - 1");
+		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size");
 		return pMem[ind];
 	}
 
@@ -139,12 +139,24 @@ public:
 		return res;
 	}
 
-	TDynamicVector operator+=(T val) { return *this + val; }
-	TDynamicVector operator-=(T val) { return *this - val; }
-	TDynamicVector operator*=(T val) { return *this * val; }
+	TDynamicVector operator+=(T val)
+	{
+		for (size_t i = 0; i < sz; i++) { this[i] = this[i] + val; }
+		return *this;
+	}
+	TDynamicVector operator-=(T val)
+	{
+		for (size_t i = 0; i < sz; i++) { this[i] = this[i] - val; }
+		return *this;
+	}
+	TDynamicVector operator*=(T val)
+	{
+		for (size_t i = 0; i < sz; i++) { this[i] = this[i] * val; }
+		return *this;
+	}
 
-	friend TDynamicVector operator*(T val, const TDynamicVector& v) 
-	{ 
+	friend TDynamicVector operator*(T val, const TDynamicVector& v)
+	{
 		TDynamicVector res = TDynamicVector(v);
 		size_t size = res.sz;
 		for (size_t i = 0; i < size; i++) { res[i] = res[i] * val; }
@@ -154,7 +166,7 @@ public:
 	// векторные операции
 	TDynamicVector operator+(const TDynamicVector& v)
 	{
-		if (sz != v.sz) 
+		if (sz != v.sz)
 			throw invalid_argument("Vector sizes must be equal");
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
@@ -163,7 +175,7 @@ public:
 	}
 	TDynamicVector operator-(const TDynamicVector& v)
 	{
-		if (sz != v.sz) 
+		if (sz != v.sz)
 			throw invalid_argument("Vector sizes must be equal");
 		TDynamicVector res = TDynamicVector(*this);
 		size_t size = res.sz;
@@ -172,7 +184,7 @@ public:
 	}
 	T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
 	{
-		if (sz != v.sz) 
+		if (sz != v.sz)
 			throw invalid_argument("Vector sizes must be equal");
 		T res = 0;
 		size_t size = sz;
@@ -181,9 +193,20 @@ public:
 		return res;
 	}
 
-	TDynamicVector operator+=(const TDynamicVector& v) { return *this + v; }
-	TDynamicVector operator-=(const TDynamicVector& v) { return *this - v; }
-	T operator*=(const TDynamicVector& v) { return *this * v; }
+	TDynamicVector& operator+=(const TDynamicVector& v)
+	{
+		if (sz != v.sz)
+			throw invalid_argument("Vector sizes must be equal");
+		for (size_t i = 0; i < sz; i++) { this[i] = this[i] + v[i]; }
+		return *this;
+	}
+	TDynamicVector& operator-=(const TDynamicVector& v)
+	{
+		if (sz != v.sz)
+			throw invalid_argument("Vector sizes must be equal");
+		for (size_t i = 0; i < sz; i++) { this[i] = this[i] - v[i]; }
+		return *this;
+	}
 
 	friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
 	{

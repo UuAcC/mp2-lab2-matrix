@@ -115,26 +115,32 @@ TEST(TDynamicVector, vectors_with_different_size_are_not_equal) // 17
 TEST(TDynamicVector, can_add_scalar_to_vector) // 18
 {
 	TDynamicVector<int> m(5);
-	EXPECT_NO_THROW(m + 1);
+	m += 1;
+	EXPECT_EQ(1, m[0]);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector) // 19
 {
 	TDynamicVector<int> m(5); m += 7;
-	EXPECT_NO_THROW(m - 1);
+	m -= 1;
+	EXPECT_EQ(6, m[0]);
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)  // 20
 {
 	TDynamicVector<int> m(5); m += 7;
-	EXPECT_NO_THROW(43 * m);
+	m *= 46;
+	EXPECT_EQ(46 * 7, m[0]);
+	EXPECT_EQ(46 * 7, m[3]);
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size) // 21
 {
 	TDynamicVector<int> m(5); m += 7;
 	TDynamicVector<int> m1(5); m1[0] = 46; m1[3] = 43;
-	EXPECT_NO_THROW(m + m1);
+	m += m1;
+	EXPECT_EQ(53, m[0]);
+	EXPECT_EQ(7, m[1]);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size) // 22
@@ -148,7 +154,9 @@ TEST(TDynamicVector, can_subtract_vectors_with_equal_size) // 23
 {
 	TDynamicVector<int> m(5); m += 7;
 	TDynamicVector<int> m1(5); m1[0] = 46; m1[3] = 43;
-	EXPECT_NO_THROW(m - m1);
+	m -= m1;
+	EXPECT_EQ(-39, m[0]);
+	EXPECT_EQ(7, m[1]);
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size) // 24
@@ -162,7 +170,8 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size) // 25
 {
 	TDynamicVector<int> m(5); m += 7;
 	TDynamicVector<int> m1(5); m1[0] = 46; m1[3] = 43;
-	EXPECT_NO_THROW(m * m1);
+	int res = m * m1;
+	EXPECT_EQ(623, res);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size) // 26
