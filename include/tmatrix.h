@@ -79,14 +79,12 @@ public:
 	T* get_pMem() noexcept { return this->pMem; }
 
 	// индексация
-	T& operator[](size_t ind)
+	T& operator[](size_t ind) 
 	{
-		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size");
 		return pMem[ind];
 	}
 	const T& operator[](size_t ind) const
 	{
-		if (ind < 0 || ind >= sz) throw out_of_range("Index should be between 0 and vector size");
 		return pMem[ind];
 	}
 	// индексация с контролем
@@ -188,7 +186,7 @@ public:
 			throw invalid_argument("Vector sizes must be equal");
 		T res = 0;
 		size_t size = sz;
-		for (size_t i = 0; i < size; i++)
+		for (size_t i = 0; i < size; i++) // (va, vb) = a1 * b1 + a2 * b2 + ...
 			res = res + this->at(i) * v[i];
 		return res;
 	}
@@ -247,17 +245,18 @@ public:
 			pMem[i] = TDynamicVector<T>(sz);
 	}
 
+	TDynamicMatrix(const TDynamicVector<TDynamicVector<T>>& vec) :
+		TDynamicVector<TDynamicVector<T>>(vec) {}
+
 	using TDynamicVector<TDynamicVector<T>>::operator[];
+	using TDynamicVector<TDynamicVector<T>>::at;
 	using TDynamicVector<TDynamicVector<T>>::size;
 	using TDynamicVector<TDynamicVector<T>>::get_pMem;
 
 	// сравнение
-	bool operator==(const TDynamicMatrix& m) const noexcept
+	bool operator==(const TDynamicMatrix& m) const noexcept 
 	{
-		if (sz != m.sz) return false;
-		for (size_t i = 0; i < sz; i++)
-			if ((*this)[i] != m[i]) return false;
-		return true;
+		return TDynamicVector<TDynamicVector<T>>::operator==(m);
 	}
 
 	// матрично-скалярные операции
@@ -273,14 +272,15 @@ public:
 			}
 		}
 		return res;
+		/*return TDynamicVector<TDynamicVector<T>>::operator*(val);*/
 	}
 
 	TDynamicMatrix& operator*=(const T& val)
 	{
-		for (size_t i = 0; i < res.sz; i++)
+		for (size_t i = 0; i < this->sz; i++)
 		{
 			auto row = (*this)[i];
-			for (size_t j = 0; j < res.sz; j++)
+			for (size_t j = 0; j < this->sz; j++)
 			{
 				row[j] = row[j] * val;
 			}
@@ -301,22 +301,14 @@ public:
 	// матрично-матричные операции
 	TDynamicMatrix operator+(const TDynamicMatrix& m)
 	{
-		if (sz != m.sz) throw invalid_argument("Matrix sizes must be equal");
-		TDynamicMatrix res(sz);
-		for (size_t i = 0; i < sz; i++) {
-			res[i] = (*this)[i] + m[i];
-		}
-		return res;
+		return TDynamicVector<TDynamicVector<T>>::operator+(m);
 	}
+
 	TDynamicMatrix operator-(const TDynamicMatrix& m)
 	{
-		if (sz != m.sz) throw invalid_argument("Matrix sizes must be equal");
-		TDynamicMatrix res(sz);
-		for (size_t i = 0; i < sz; i++) {
-			res[i] = (*this)[i] - m[i];
-		}
-		return res;
+		return TDynamicVector<TDynamicVector<T>>::operator-(m);
 	}
+
 	TDynamicMatrix operator*(const TDynamicMatrix& m)
 	{
 		if (sz != m.sz)
